@@ -1,6 +1,6 @@
-package com.fork52.rxcodeforcesapi;
+package com.fork52.rxcodeforces.api;
 
-import com.fork52.rxcodeforcesapi.dto.ContestResponse;
+import com.fork52.rxcodeforces.api.dto.ContestResponse;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

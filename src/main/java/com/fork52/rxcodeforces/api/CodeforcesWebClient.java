@@ -1,12 +1,9 @@
-package com.fork52.rxcodeforcesapi;
+package com.fork52.rxcodeforces.api;
 
-import com.fork52.rxcodeforcesapi.dto.Contest;
-import com.fork52.rxcodeforcesapi.dto.ContestResponse;
+import com.fork52.rxcodeforces.api.dto.ContestResponse;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 public class CodeforcesWebClient {
     final private static WebClient codeforcesWebClient;
