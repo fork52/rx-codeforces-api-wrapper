@@ -1,6 +1,7 @@
 package com.fork52.rxcodeforces.api;
 
-import com.fork52.rxcodeforces.api.dto.ContestResponse;
+import com.fork52.rxcodeforces.api.dto.Contest;
+import com.fork52.rxcodeforces.api.dto.CFResponse;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -22,11 +23,18 @@ public class CodeforcesWebClient {
                 .build();
     }
 
-    public static Mono<ContestResponse> getContests(){
-        return CodeforcesWebClient.codeforcesWebClient
+    @SuppressWarnings("unchecked")
+    public static Mono<CFResponse<Contest>> getContests(Boolean gym){
+        CFResponse<Contest> contestCFResponse = new CFResponse<>();
+        return (Mono<CFResponse<Contest>>) CodeforcesWebClient.codeforcesWebClient
                 .get()
-                .uri("/contest.list")
+                .uri(
+                    uriBuilder -> uriBuilder
+                        .path("/contest.list")
+                        .queryParam("gym", gym)
+                        .build()
+                )
                 .retrieve()
-                .bodyToMono(ContestResponse.class);
+                .bodyToMono(contestCFResponse.getClass());
     }
 }

@@ -9,8 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class ContestResponse {
+public class CFResponse<T>{
     private String status;
-    private List<Contest> result;
+    private List<T> result;
 }

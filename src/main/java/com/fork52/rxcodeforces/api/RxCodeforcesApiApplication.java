@@ -1,11 +1,14 @@
 package com.fork52.rxcodeforces.api;
 
-import com.fork52.rxcodeforces.api.dto.ContestResponse;
+import com.fork52.rxcodeforces.api.dto.Contest;
+import com.fork52.rxcodeforces.api.dto.CFResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+@Slf4j
 public class RxCodeforcesApiApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
@@ -14,7 +17,8 @@ public class RxCodeforcesApiApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		ContestResponse contestResponse = CodeforcesWebClient.getContests().block();
-		System.out.println(contestResponse);
+		log.info("Making request");
+		CFResponse<Contest> contestCFResponse = CodeforcesWebClient.getContests(false).block();
+		log.info("Completed request.");
 	}
 }

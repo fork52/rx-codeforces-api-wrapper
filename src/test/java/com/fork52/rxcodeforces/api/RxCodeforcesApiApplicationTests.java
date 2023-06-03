@@ -1,13 +1,21 @@
 package com.fork52.rxcodeforces.api;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import reactor.test.StepVerifier;
+import java.time.Duration;
 
-@SpringBootTest
 class RxCodeforcesApiApplicationTests {
 
 	@Test
 	void contextLoads() {
 	}
 
+	@Test
+	void testGetContests(){
+		StepVerifier.create(CodeforcesWebClient.getContests(false))
+				.expectSubscription()
+				.expectNextCount(1)
+				.verifyComplete();
+	}
 }
