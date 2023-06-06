@@ -2,9 +2,12 @@ package com.fork52.rxcodeforces.api;
 
 import com.fork52.rxcodeforces.api.dto.Contest;
 import com.fork52.rxcodeforces.api.dto.CFResponse;
+import com.fork52.rxcodeforces.api.dto.User;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 public class CodeforcesWebClient {
     private volatile static CodeforcesWebClient uniqueInstance;
@@ -35,7 +38,6 @@ public class CodeforcesWebClient {
         return uniqueInstance;
     }
 
-
     @SuppressWarnings("unchecked")
     public Mono<CFResponse<Contest>> getContests(Boolean gym){
         CFResponse<Contest> contestCFResponse = new CFResponse<>();
@@ -46,6 +48,22 @@ public class CodeforcesWebClient {
                         .path("/contest.list")
                         .queryParam("gym", gym)
                         .build()
+                )
+                .retrieve()
+                .bodyToMono(contestCFResponse.getClass());
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public Mono<CFResponse<User>> getUsers(List<String> handles){
+        CFResponse<User> contestCFResponse = new CFResponse<>();
+        return (Mono<CFResponse<User>>) this.codeforcesWebClient
+                .get()
+                .uri(
+                        uriBuilder -> uriBuilder
+                                .path("/user.info")
+                                .queryParam("handles", String.join(";", handles))
+                                .build()
                 )
                 .retrieve()
                 .bodyToMono(contestCFResponse.getClass());
