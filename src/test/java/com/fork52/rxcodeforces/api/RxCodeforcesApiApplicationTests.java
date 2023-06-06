@@ -13,7 +13,7 @@ class RxCodeforcesApiApplicationTests {
 
 	@Test
 	void testGetContests(){
-		StepVerifier.create(CodeforcesWebClient.getContests(false))
+		StepVerifier.create(CodeforcesWebClient.getInstance().getContests(false))
 				.expectSubscription()
 				.expectNextCount(1)
 				.verifyComplete();

@@ -18,7 +18,8 @@ public class RxCodeforcesApiApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		log.info("Making request");
-		CFResponse<Contest> contestCFResponse = CodeforcesWebClient.getContests(false).block();
+		CodeforcesWebClient codeforcesWebClient = CodeforcesWebClient.getInstance();
+		CFResponse<Contest> contestCFResponse = codeforcesWebClient.getContests(false).block();
 		log.info("Completed request.");
 	}
 }

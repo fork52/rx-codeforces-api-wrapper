@@ -7,26 +7,39 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 public class CodeforcesWebClient {
-    final private static WebClient codeforcesWebClient;
+    private volatile static CodeforcesWebClient uniqueInstance;
+    private WebClient codeforcesWebClient;
 
-    static {
-        // Increasing buffer size
-        // References: https://stackoverflow.com/questions/59735951/databufferlimitexception-exceeded-limit-on-max-bytes-to-buffer-webflux-error
-        final int size = 1 << 24;
-        final ExchangeStrategies strategies = ExchangeStrategies.builder()
-                .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(size))
-                .build();
+    private CodeforcesWebClient(){}
 
-        codeforcesWebClient = WebClient.builder()
-                .exchangeStrategies(strategies)
-                .baseUrl("https://codeforces.com/api")
-                .build();
+    public static CodeforcesWebClient getInstance(){
+        if(uniqueInstance == null){
+            synchronized (CodeforcesWebClient.class) {
+                if(uniqueInstance == null){
+                    uniqueInstance = new CodeforcesWebClient();
+
+                    // Increasing buffer size
+                    // References: https://stackoverflow.com/questions/59735951/databufferlimitexception-exceeded-limit-on-max-bytes-to-buffer-webflux-error
+                    final int size = 1 << 20;
+                    final ExchangeStrategies strategies = ExchangeStrategies.builder()
+                            .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(size))
+                            .build();
+
+                    uniqueInstance.codeforcesWebClient = WebClient.builder()
+                            .exchangeStrategies(strategies)
+                            .baseUrl("https://codeforces.com/api")
+                            .build();
+                }
+            }
+        }
+        return uniqueInstance;
     }
 
+
     @SuppressWarnings("unchecked")
-    public static Mono<CFResponse<Contest>> getContests(Boolean gym){
+    public Mono<CFResponse<Contest>> getContests(Boolean gym){
         CFResponse<Contest> contestCFResponse = new CFResponse<>();
-        return (Mono<CFResponse<Contest>>) CodeforcesWebClient.codeforcesWebClient
+        return (Mono<CFResponse<Contest>>) this.codeforcesWebClient
                 .get()
                 .uri(
                     uriBuilder -> uriBuilder
