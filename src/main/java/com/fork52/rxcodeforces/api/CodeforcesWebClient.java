@@ -11,6 +11,10 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+
+/**
+ * Represents CodeforcesWebClient
+ * */
 public class CodeforcesWebClient {
     private volatile static CodeforcesWebClient uniqueInstance;
     private WebClient codeforcesWebClient;
@@ -40,6 +44,15 @@ public class CodeforcesWebClient {
         return uniqueInstance;
     }
 
+    /**
+     * makeRequest to Codeforces api
+     * @param path
+     *      Endpoint path
+     * @param params
+     *      List of parameters. Each parameter is a pair
+     * @param isAuthorized
+     *      Boolean value showing whether authorization is required.
+     * */
     @SuppressWarnings("unchecked")
     public <T> Mono<CFResponse<T>> makeRequest(String path, List<Pair> params, Boolean isAuthorized){
         CFResponse<T> contestCFResponse = new CFResponse<>();
@@ -58,6 +71,12 @@ public class CodeforcesWebClient {
                 .bodyToMono(contestCFResponse.getClass());
     }
 
+
+    /**
+     * Returns information about all available contests.
+     * @param gym
+     *      Boolean. If true — than gym contests are returned. Otherwise, regular contests are returned.
+     * */
     public Mono<CFResponse<Contest>> getContestList(Boolean gym){
         return this.makeRequest(
                 "/contest.list",
@@ -66,6 +85,11 @@ public class CodeforcesWebClient {
         );
     }
 
+    /**
+     * Returns information about one or several users.
+     * @param handles
+     *      List of handles. Semicolon-separated list of handles. No more than 10000 handles is accepted.
+     * */
     public Mono<CFResponse<User>> getUserInfo(List<String> handles){
         return this.makeRequest(
                 "/user.info",
@@ -73,6 +97,13 @@ public class CodeforcesWebClient {
                 false
         );
     }
+
+
+    /**
+     * Returns a list of comments to the specified blog entry.
+     * @param blogEntryId
+     *      Id of the blog entry. It can be seen in blog entry URL. For example: /blog/entry/79
+     * */
     public Mono<CFResponse<Comment>> getBlogEntryComments(String blogEntryId){
         return this.makeRequest(
                 "/blogEntry.comments",
