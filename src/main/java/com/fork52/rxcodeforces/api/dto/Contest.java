@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+/**
+ * Represents a contest on Codeforces.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -46,7 +50,7 @@ public class Contest {
 
 
     /**
-     * String. Can be absent. Handle of the user, how created the contest.
+     * String. Can be absent. Handle of the user, who created the contest.
      * */
     private String preparedBy;
 
@@ -56,9 +60,15 @@ public class Contest {
     private String websiteUrl;
 
     /**
-     * Integer. Can be absent. From 1 to 5. Larger number means more difficult problems.
+     * String. Localized. Can be absent.
      * */
     private String description;
+
+
+    /**
+     * Integer. Can be absent. From 1 to 5. Larger number means more difficult problems.
+     * */
+    private Integer difficulty;
 
     /**
      * String. Localized. Can be absent.
