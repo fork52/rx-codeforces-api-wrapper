@@ -1,8 +1,10 @@
 package com.fork52.rxcodeforces.api;
 
-import com.fork52.rxcodeforces.api.dto.Contest;
 import com.fork52.rxcodeforces.api.dto.CFResponse;
+import com.fork52.rxcodeforces.api.dto.Comment;
+import com.fork52.rxcodeforces.api.dto.Contest;
 import com.fork52.rxcodeforces.api.dto.User;
+import com.fork52.rxcodeforces.api.util.Pair;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -39,33 +41,43 @@ public class CodeforcesWebClient {
     }
 
     @SuppressWarnings("unchecked")
-    public Mono<CFResponse<Contest>> getContests(Boolean gym){
-        CFResponse<Contest> contestCFResponse = new CFResponse<>();
-        return (Mono<CFResponse<Contest>>) this.codeforcesWebClient
+    public <T> Mono<CFResponse<T>> makeRequest(String path, List<Pair> params, Boolean isAuthorized){
+        CFResponse<T> contestCFResponse = new CFResponse<>();
+        return (Mono<CFResponse<T>>) this.codeforcesWebClient
                 .get()
                 .uri(
-                    uriBuilder -> uriBuilder
-                        .path("/contest.list")
-                        .queryParam("gym", gym)
-                        .build()
+                        uriBuilder -> {
+                            uriBuilder = uriBuilder.path(path);
+                            for(Pair p: params){
+                                uriBuilder = uriBuilder.queryParam(p.getKey(), p.getValue());
+                            }
+                            return uriBuilder.build();
+                        }
                 )
                 .retrieve()
                 .bodyToMono(contestCFResponse.getClass());
     }
 
+    public Mono<CFResponse<Contest>> getContestList(Boolean gym){
+        return this.makeRequest(
+                "/contest.list",
+                List.of(new Pair("gym", gym.toString())),
+                false
+        );
+    }
 
-    @SuppressWarnings("unchecked")
-    public Mono<CFResponse<User>> getUsers(List<String> handles){
-        CFResponse<User> contestCFResponse = new CFResponse<>();
-        return (Mono<CFResponse<User>>) this.codeforcesWebClient
-                .get()
-                .uri(
-                        uriBuilder -> uriBuilder
-                                .path("/user.info")
-                                .queryParam("handles", String.join(";", handles))
-                                .build()
-                )
-                .retrieve()
-                .bodyToMono(contestCFResponse.getClass());
+    public Mono<CFResponse<User>> getUserInfo(List<String> handles){
+        return this.makeRequest(
+                "/user.info",
+                List.of(new Pair("handles",  String.join(";", handles))),
+                false
+        );
+    }
+    public Mono<CFResponse<Comment>> getBlogEntryComments(String blogEntryId){
+        return this.makeRequest(
+                "/blogEntry.comments",
+                List.of(new Pair("blogEntryId",  blogEntryId)),
+                false
+        );
     }
 }
