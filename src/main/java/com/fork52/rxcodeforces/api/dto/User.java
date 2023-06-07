@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+/**
+ * Represents a Codeforces user.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

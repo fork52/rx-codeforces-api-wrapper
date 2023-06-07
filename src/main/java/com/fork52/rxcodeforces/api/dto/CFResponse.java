@@ -5,6 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
 
+
+/**
+ * Represents a CF response.
+ * */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
