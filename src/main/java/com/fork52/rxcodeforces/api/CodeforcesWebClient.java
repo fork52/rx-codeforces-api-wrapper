@@ -9,39 +9,33 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 
-
 /**
- * Represents CodeforcesWebClient
+ * Represents a CodeforcesWebClient
  * */
 public class CodeforcesWebClient {
-    private volatile static CodeforcesWebClient uniqueInstance;
-    private WebClient codeforcesWebClient;
+    private final WebClient cfWebClient;
+    private CFAuthenticator cfAuthenticator;
 
-    private CodeforcesWebClient(){}
+    public CodeforcesWebClient(){
+        final int size = 1 << 15;
+        final ExchangeStrategies strategies = ExchangeStrategies.builder()
+                .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(size))
+                .build();
 
-    public static CodeforcesWebClient getInstance(){
-        if(uniqueInstance == null){
-            synchronized (CodeforcesWebClient.class) {
-                if(uniqueInstance == null){
-                    uniqueInstance = new CodeforcesWebClient();
+        this.cfWebClient = WebClient.builder()
+                .exchangeStrategies(strategies)
+                .baseUrl("https://codeforces.com/api/")
+                .build();
 
-                    // Increasing buffer size
-                    // References: https://stackoverflow.com/questions/59735951/databufferlimitexception-exceeded-limit-on-max-bytes-to-buffer-webflux-error
-                    final int size = 1 << 20;
-                    final ExchangeStrategies strategies = ExchangeStrategies.builder()
-                            .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(size))
-                            .build();
+        this.cfAuthenticator = null;
+    }
 
-                    uniqueInstance.codeforcesWebClient = WebClient.builder()
-                            .exchangeStrategies(strategies)
-                            .baseUrl("https://codeforces.com/api")
-                            .build();
-                }
-            }
-        }
-        return uniqueInstance;
+     public CodeforcesWebClient(String apiKey, String apiSecret){
+        this();
+        this.cfAuthenticator = new CFAuthenticator(apiKey, apiSecret);
     }
 
     /**
@@ -56,16 +50,31 @@ public class CodeforcesWebClient {
     @SuppressWarnings("unchecked")
     public <T> Mono<CFResponse<T>> makeRequest(String path, List<Pair> params, Boolean isAuthorized){
         CFResponse<T> contestCFResponse = new CFResponse<>();
-        return (Mono<CFResponse<T>>) this.codeforcesWebClient
+        List<Pair> queryParams = new ArrayList<>();
+
+        return (Mono<CFResponse<T>>) this.cfWebClient
                 .get()
                 .uri(
-                        uriBuilder -> {
-                            uriBuilder = uriBuilder.path(path);
-                            for(Pair p: params){
-                                uriBuilder = uriBuilder.queryParam(p.getKey(), p.getValue());
-                            }
-                            return uriBuilder.build();
+                    uriBuilder -> {
+                        uriBuilder = uriBuilder.path(path);
+
+                        queryParams.addAll(params);
+
+                        if (Boolean.TRUE.equals(isAuthorized)) {
+                            long unixTime = System.currentTimeMillis() / 1000L;
+                            queryParams.add(new Pair("apiKey", cfAuthenticator.getApiKey()));
+                            queryParams.add(new Pair("time", String.valueOf(unixTime)));
+                            queryParams.addAll(params);
+                            queryParams.add(new Pair("apiSig", cfAuthenticator.getApiSignature(path, queryParams)));
                         }
+
+
+                        for(Pair p: queryParams){
+                            uriBuilder = uriBuilder.queryParam(p.getKey(), p.getValue());
+                        }
+
+                        return uriBuilder.build();
+                    }
                 )
                 .retrieve()
                 .bodyToMono(contestCFResponse.getClass());
@@ -88,7 +97,7 @@ public class CodeforcesWebClient {
     /**
      * Returns information about one or several users.
      * @param handles
-     *      List of handles. Semicolon-separated list of handles. No more than 10000 handles is accepted.
+     *      Semicolon-separated list of handles. No more than 10000 handles is accepted.
      * */
     public Mono<CFResponse<User>> getUserInfo(List<String> handles){
         return this.makeRequest(

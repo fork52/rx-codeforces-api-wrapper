@@ -9,7 +9,7 @@ class RxCodeforcesApiApplicationTests {
 
 	@Test
 	void testGetContestList(){
-		StepVerifier.create(CodeforcesWebClient.getInstance().getContestList(false))
+		StepVerifier.create(new CodeforcesWebClient().getContestList(false))
 				.expectSubscription()
 				.expectNextCount(1)
 				.verifyComplete();
@@ -17,7 +17,7 @@ class RxCodeforcesApiApplicationTests {
 
 	@Test
 	void testGetUserInfo(){
-		StepVerifier.create(CodeforcesWebClient.getInstance().getUserInfo(Arrays.asList("DmitriyH", "Fefer_Ivan")))
+		StepVerifier.create(new CodeforcesWebClient().getUserInfo(Arrays.asList("DmitriyH", "Fefer_Ivan")))
 				.expectSubscription()
 				.expectNextCount(1)
 				.verifyComplete();
@@ -25,7 +25,7 @@ class RxCodeforcesApiApplicationTests {
 
 	@Test
 	void testBlogEntryComments(){
-		StepVerifier.create(CodeforcesWebClient.getInstance().getBlogEntryComments("79"))
+		StepVerifier.create(new CodeforcesWebClient().getBlogEntryComments("79"))
 				.expectSubscription()
 				.expectNextCount(1)
 				.verifyComplete();
