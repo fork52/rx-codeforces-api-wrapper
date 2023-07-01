@@ -15,4 +15,5 @@ import java.util.List;
 public class CFResponse<T>{
     private String status;
     private List<T> result;
+    private String comment;
 }
