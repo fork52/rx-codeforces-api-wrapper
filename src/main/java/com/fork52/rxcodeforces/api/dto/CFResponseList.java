@@ -12,8 +12,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CFResponse<T>{
+public class CFResponseList<T>{
     private String status;
-    private T result;
+    private List<T> result;
     private String comment;
 }
