@@ -63,23 +63,28 @@ public class CFAuthenticator {
     }
 
     /**
+     * Returns the SHA512 hash of text
      * @param text String to be hashed.
      * @return Hashed String
-     * Reference: <a href="http://www.java2s.com/example/java-utility-method/sha512/sha512-string-original-55397.html">SHA Hash</a>
      * */
     private static String hashSHA512(String text) {
-        String sha512 = "";
-        try {
-            final MessageDigest md = MessageDigest.getInstance("SHA-512");
-            md.update(text.getBytes());
-            final byte[] digest = md.digest();
-            final StringBuilder sb = new StringBuilder();
-            for (byte b : digest) {
-                sb.append(String.format("%02x", b & 0xff));
+        try{
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
+
+            byte[] inputBytes = text.getBytes();
+            byte[] hashBytes = messageDigest.digest(inputBytes);
+
+            StringBuilder hashStringBuilder = new StringBuilder();
+            for (byte b : hashBytes) {
+                String hex = String.format("%02x", b);
+                hashStringBuilder.append(hex);
             }
-            sha512 = sb.toString();
-        } catch (NoSuchAlgorithmException ignored) {
+
+            return hashStringBuilder.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
-        return sha512;
+
+        return null;
     }
 }
