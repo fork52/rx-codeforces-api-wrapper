@@ -20,7 +20,7 @@ public class CodeforcesWebClient {
     private CFAuthenticator cfAuthenticator;
 
     public CodeforcesWebClient(){
-        final int size = 1 << 15;
+        final int size = 1 << 20;
         final ExchangeStrategies strategies = ExchangeStrategies.builder()
                 .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(size))
                 .build();
@@ -64,10 +64,8 @@ public class CodeforcesWebClient {
                             long unixTime = System.currentTimeMillis() / 1000L;
                             queryParams.add(new Pair("apiKey", cfAuthenticator.getApiKey()));
                             queryParams.add(new Pair("time", String.valueOf(unixTime)));
-                            queryParams.addAll(params);
                             queryParams.add(new Pair("apiSig", cfAuthenticator.getApiSignature(path, queryParams)));
                         }
-
 
                         for(Pair p: queryParams){
                             uriBuilder = uriBuilder.queryParam(p.getKey(), p.getValue());
