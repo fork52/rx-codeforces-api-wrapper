@@ -8,44 +8,44 @@ import lombok.NoArgsConstructor;
 
 /**
  * Represents a comment.
- * */
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
 
-    /**
-     * Integer.
-     * */
-    private Integer id;
+  /**
+   * Integer.
+   */
+  private Integer id;
 
-    /**
-     * Integer. Time, when comment was created, in unix format.
-     * */
-    private Integer creationTimeSecondsTime;
+  /**
+   * Integer. Time, when comment was created, in unix format.
+   */
+  private Integer creationTimeSecondsTime;
 
-    /**
-     * String.
-     * */
-    private String commentatorHandle;
+  /**
+   * String.
+   */
+  private String commentatorHandle;
 
-    /**
-     * String.
-     * */
-    private String locale;
+  /**
+   * String.
+   */
+  private String locale;
 
-    /**
-     * String.
-     * */
-    private String text;
+  /**
+   * String.
+   */
+  private String text;
 
-    /**
-     * Integer. Can be absent.
-     * */
-    private Integer parentCommentId;
+  /**
+   * Integer. Can be absent.
+   */
+  private Integer parentCommentId;
 
-    /**
-     * Integer.
-     * */
-    private  Integer rating;
+  /**
+   * Integer.
+   */
+  private Integer rating;
 }

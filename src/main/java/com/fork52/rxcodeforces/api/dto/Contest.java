@@ -12,88 +12,90 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Contest {
-    private Integer id;
-    private String name;
 
-    /**
-     * Enum: CF, IOI, ICPC. Scoring system used for the contest.
-     * */
-    private String type;
+  private Integer id;
+  private String name;
 
-    /**
-     * 	Enum: BEFORE, CODING, PENDING_SYSTEM_TEST, SYSTEM_TEST, FINISHED.
-     * */
-    private String phase;
+  /**
+   * Enum: CF, IOI, ICPC. Scoring system used for the contest.
+   */
+  private String type;
 
-    /**
-     * 	Boolean. If true, then the ranklist for the contest is frozen and shows only submissions,
-     * 	created before freeze.
-     * */
-    private Boolean frozen;
+  /**
+   * Enum: BEFORE, CODING, PENDING_SYSTEM_TEST, SYSTEM_TEST, FINISHED.
+   */
+  private String phase;
 
-
-    /**
-     * Integer. Duration of the contest in seconds.
-     * */
-    private Integer durationSeconds;
-
-    /**
-     * Integer. Can be absent. Contest start time in unix format.
-     * */
-    private Integer startTimeSeconds;
-
-    /**
-     * Integer. Can be absent. Number of seconds, passed after the start of the contest.
-     * Can be negative..
-     * */
-    private Integer relativeTimeSeconds	;
+  /**
+   * Boolean. If true, then the ranklist for the contest is frozen and shows only submissions,
+   * created before freeze.
+   */
+  private Boolean frozen;
 
 
-    /**
-     * String. Can be absent. Handle of the user, who created the contest.
-     * */
-    private String preparedBy;
+  /**
+   * Integer. Duration of the contest in seconds.
+   */
+  private Integer durationSeconds;
 
-    /**
-     * String. Can be absent. URL for contest-related website.
-     * */
-    private String websiteUrl;
+  /**
+   * Integer. Can be absent. Contest start time in unix format.
+   */
+  private Integer startTimeSeconds;
 
-    /**
-     * String. Localized. Can be absent.
-     * */
-    private String description;
+  /**
+   * Integer. Can be absent. Number of seconds, passed after the start of the contest. Can be
+   * negative..
+   */
+  private Integer relativeTimeSeconds;
 
 
-    /**
-     * Integer. Can be absent. From 1 to 5. Larger number means more difficult problems.
-     * */
-    private Integer difficulty;
+  /**
+   * String. Can be absent. Handle of the user, who created the contest.
+   */
+  private String preparedBy;
 
-    /**
-     * String. Localized. Can be absent.
-     * Human-readable type of the contest from the following categories: Official ICPC Contest, Official School Contest, Opencup Contest,
-     * School/University/City/Region Championship, Training Camp Contest, Official International Personal Contest, Training Contest.
-     * */
-    private String kind;
+  /**
+   * String. Can be absent. URL for contest-related website.
+   */
+  private String websiteUrl;
 
-    /**
-     * String. Localized. Can be absent. Name of the Region for official ICPC contests.
-     * */
-    private String icpcRegion;
+  /**
+   * String. Localized. Can be absent.
+   */
+  private String description;
 
-    /**
-     * String. Localized. Can be absent.
-     * */
-    private String country;
 
-    /**
-     * 	String. Localized. Can be absent.
-     * */
-    private String city;
+  /**
+   * Integer. Can be absent. From 1 to 5. Larger number means more difficult problems.
+   */
+  private Integer difficulty;
 
-    /**
-     * String. Can be absent.
-     * */
-    private String season;
+  /**
+   * String. Localized. Can be absent. Human-readable type of the contest from the following
+   * categories: Official ICPC Contest, Official School Contest, Opencup Contest,
+   * School/University/City/Region Championship, Training Camp Contest, Official International
+   * Personal Contest, Training Contest.
+   */
+  private String kind;
+
+  /**
+   * String. Localized. Can be absent. Name of the Region for official ICPC contests.
+   */
+  private String icpcRegion;
+
+  /**
+   * String. Localized. Can be absent.
+   */
+  private String country;
+
+  /**
+   * String. Localized. Can be absent.
+   */
+  private String city;
+
+  /**
+   * String. Can be absent.
+   */
+  private String season;
 }

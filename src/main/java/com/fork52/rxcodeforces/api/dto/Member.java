@@ -11,13 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member {
-    /**
-     * The Codeforces user handle.
-     */
-    private String handle;
 
-    /**
-     * This field can be absent. It represents the user's name if available.
-     */
-    private String name;
+  /**
+   * The Codeforces user handle.
+   */
+  private String handle;
+
+  /**
+   * This field can be absent. It represents the user's name if available.
+   */
+  private String name;
 }

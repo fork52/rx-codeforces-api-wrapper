@@ -1,70 +1,70 @@
 package com.fork52.rxcodeforces.api.dto;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 /**
  * Represents a Codeforces blog entry. May be in either short or full version.
- * */
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class BlogEntry {
-    /**
-     * The id of the blog entry.
-     */
-    private Integer id;
 
-    /**
-     * The original locale of the blog entry.
-     */
-    private String originalLocale;
+  /**
+   * The id of the blog entry.
+   */
+  private Integer id;
 
-    /**
-     * The time when the blog entry was created, in Unix format.
-     */
-    private Integer creationTimeSeconds;
+  /**
+   * The original locale of the blog entry.
+   */
+  private String originalLocale;
 
-    /**
-     * The author's user handle.
-     */
-    private String authorHandle;
+  /**
+   * The time when the blog entry was created, in Unix format.
+   */
+  private Integer creationTimeSeconds;
 
-    /**
-     * The localized title of the blog entry.
-     */
-    private String title;
+  /**
+   * The author's user handle.
+   */
+  private String authorHandle;
 
-    /**
-     * The localized content of the blog entry. This field is not included in the short version.
-     */
-    private String content;
+  /**
+   * The localized title of the blog entry.
+   */
+  private String title;
 
-    /**
-     * The locale of the blog entry.
-     */
-    private String locale;
+  /**
+   * The localized content of the blog entry. This field is not included in the short version.
+   */
+  private String content;
 
-    /**
-     * The time when the blog entry has been updated, in Unix format.
-     */
-    private Integer modificationTimeSeconds;
+  /**
+   * The locale of the blog entry.
+   */
+  private String locale;
 
-    /**
-     * Indicates whether viewing any specific revision of the blog entry is allowed.
-     */
-    private Boolean allowViewHistory;
+  /**
+   * The time when the blog entry has been updated, in Unix format.
+   */
+  private Integer modificationTimeSeconds;
 
-    /**
-     * The list of tags associated with the blog entry.
-     */
-    private List<String> tags;
+  /**
+   * Indicates whether viewing any specific revision of the blog entry is allowed.
+   */
+  private Boolean allowViewHistory;
 
-    /**
-     * The rating of the blog writer.
-     */
-    private Integer rating;
+  /**
+   * The list of tags associated with the blog entry.
+   */
+  private List<String> tags;
+
+  /**
+   * The rating of the blog writer.
+   */
+  private Integer rating;
 }

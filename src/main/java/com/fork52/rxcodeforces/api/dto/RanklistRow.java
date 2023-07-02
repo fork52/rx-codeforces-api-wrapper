@@ -1,10 +1,9 @@
 package com.fork52.rxcodeforces.api.dto;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 /**
  * Represents a ranklist row.
@@ -13,45 +12,47 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RanklistRow {
-    /**
-     * The party that took a corresponding place in the contest.
-     */
-    private Party party;
 
-    /**
-     * The party's place in the contest.
-     */
-    private Integer rank;
+  /**
+   * The party that took a corresponding place in the contest.
+   */
+  private Party party;
 
-    /**
-     * The total amount of points scored by the party.
-     */
-    private Double points;
+  /**
+   * The party's place in the contest.
+   */
+  private Integer rank;
 
-    /**
-     * The total penalty (in ICPC meaning) of the party.
-     */
-    private Integer penalty;
+  /**
+   * The total amount of points scored by the party.
+   */
+  private Double points;
 
-    /**
-     * The number of successful hacks made by the party.
-     */
-    private Integer successfulHackCount;
+  /**
+   * The total penalty (in ICPC meaning) of the party.
+   */
+  private Integer penalty;
 
-    /**
-     * The number of unsuccessful hacks made by the party.
-     */
-    private Integer unsuccessfulHackCount;
+  /**
+   * The number of successful hacks made by the party.
+   */
+  private Integer successfulHackCount;
 
-    /**
-     * The party's results for each problem. The order of the problems is the same as in the "problems" field of the returned object.
-     */
-    private List<ProblemResult> problemResults;
+  /**
+   * The number of unsuccessful hacks made by the party.
+   */
+  private Integer unsuccessfulHackCount;
 
-    /**
-     * For IOI contests only. The time in seconds from the start of the contest to the last submission that added some points
-     * to the total score of the party. This field can be absent.
-     */
-    private Integer lastSubmissionTimeSeconds;
+  /**
+   * The party's results for each problem. The order of the problems is the same as in the
+   * "problems" field of the returned object.
+   */
+  private List<ProblemResult> problemResults;
+
+  /**
+   * For IOI contests only. The time in seconds from the start of the contest to the last submission
+   * that added some points to the total score of the party. This field can be absent.
+   */
+  private Integer lastSubmissionTimeSeconds;
 }
 

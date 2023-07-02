@@ -1,10 +1,9 @@
 package com.fork52.rxcodeforces.api.dto;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 /**
  * Represents contest standings on codeforces.
@@ -13,7 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContestStandings {
-    Contest contest;
-    List<Problem> problems;
-    List<RanklistRow> rows;
+
+  Contest contest;
+  List<Problem> problems;
+  List<RanklistRow> rows;
 }

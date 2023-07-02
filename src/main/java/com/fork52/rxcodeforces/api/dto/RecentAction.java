@@ -11,18 +11,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecentAction {
-    /**
-     * The action time in Unix format.
-     */
-    private Integer timeSeconds;
 
-    /**
-     * The BlogEntry object in short form. This field can be absent.
-     */
-    private BlogEntry blogEntry;
+  /**
+   * The action time in Unix format.
+   */
+  private Integer timeSeconds;
 
-    /**
-     * The Comment object. This field can be absent.
-     */
-    private Comment comment;
+  /**
+   * The BlogEntry object in short form. This field can be absent.
+   */
+  private BlogEntry blogEntry;
+
+  /**
+   * The Comment object. This field can be absent.
+   */
+  private Comment comment;
 }
