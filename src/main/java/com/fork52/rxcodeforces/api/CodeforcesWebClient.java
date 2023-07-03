@@ -9,8 +9,10 @@ import com.fork52.rxcodeforces.api.dto.ContestStandings;
 import com.fork52.rxcodeforces.api.dto.Hack;
 import com.fork52.rxcodeforces.api.dto.ProblemSet;
 import com.fork52.rxcodeforces.api.dto.RatingChange;
+import com.fork52.rxcodeforces.api.dto.RecentAction;
 import com.fork52.rxcodeforces.api.dto.Submission;
 import com.fork52.rxcodeforces.api.dto.User;
+import com.fork52.rxcodeforces.api.exception.CodeforcesApiException;
 import com.fork52.rxcodeforces.api.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ public class CodeforcesWebClient {
   private CFAuthenticator cfAuthenticator;
 
   public CodeforcesWebClient() {
-    final int size = 1 << 20;
+    final int size = 1 << 26;
     final ExchangeStrategies strategies = ExchangeStrategies.builder()
         .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(size))
         .build();
@@ -113,7 +115,7 @@ public class CodeforcesWebClient {
   private <T> Mono<CFResponse<T>> makeRequest(String path, List<Pair> params,
       Boolean isAuthorized,
       ParameterizedTypeReference<CFResponse<T>> typeReference
-      ) {
+  ) {
     return this.cfWebClient
         .get()
         .uri(
@@ -135,7 +137,8 @@ public class CodeforcesWebClient {
         "blogEntry.comments",
         List.of(new Pair("blogEntryId", blogEntryId)),
         false,
-        new ParameterizedTypeReference<CFResponseList<Comment>>(){}
+        new ParameterizedTypeReference<CFResponseList<Comment>>() {
+        }
     );
   }
 
@@ -150,7 +153,8 @@ public class CodeforcesWebClient {
         "blogEntry.view",
         List.of(new Pair("blogEntryId", blogEntryId)),
         false,
-        new ParameterizedTypeReference<CFResponse<BlogEntry>>() {}
+        new ParameterizedTypeReference<CFResponse<BlogEntry>>() {
+        }
     );
   }
 
@@ -166,7 +170,8 @@ public class CodeforcesWebClient {
         "contest.hacks",
         List.of(new Pair("contestId", contestId)),
         false,
-        new ParameterizedTypeReference<CFResponseList<Hack>>(){}
+        new ParameterizedTypeReference<CFResponseList<Hack>>() {
+        }
     );
   }
 
@@ -181,7 +186,8 @@ public class CodeforcesWebClient {
         "contest.list",
         List.of(new Pair("gym", gym.toString())),
         false,
-        new ParameterizedTypeReference<CFResponseList<Contest>>(){}
+        new ParameterizedTypeReference<CFResponseList<Contest>>() {
+        }
     );
   }
 
@@ -231,7 +237,8 @@ public class CodeforcesWebClient {
         "contest.standings",
         filterNullParameters(keys, values),
         false,
-        new ParameterizedTypeReference<CFResponse<ContestStandings>>() {}
+        new ParameterizedTypeReference<CFResponse<ContestStandings>>() {
+        }
     );
   }
 
@@ -259,7 +266,8 @@ public class CodeforcesWebClient {
         "contest.status",
         filterNullParameters(keys, values),
         false,
-        new ParameterizedTypeReference<CFResponseList<Submission>>() {}
+        new ParameterizedTypeReference<CFResponseList<Submission>>() {
+        }
     );
   }
 
@@ -291,21 +299,82 @@ public class CodeforcesWebClient {
         "problemset.problems",
         params,
         false,
-        new ParameterizedTypeReference<CFResponse<ProblemSet>>() {}
+        new ParameterizedTypeReference<CFResponse<ProblemSet>>() {
+        }
     );
   }
 
   /**
-   * Returns information about one or several users.
+   * Retrieves recent submissions.
    *
-   * @param handles Semicolon-separated list of handles. No more than 10000 handles is accepted.
+   * @param count          (Required) The number of submissions to return. Can be up to 1000.
+   * @param problemSetName The custom problemset's short name, like 'acmsguru'. If specified, only
+   *                       submissions from the specified problemset will be returned.
+   * @return A list of Submission objects, sorted in decreasing order of submission id.
    */
-  public Mono<CFResponseList<User>> getUserInfo(List<String> handles) {
+  public Mono<CFResponseList<Submission>> getProblemSetRecentStatus(
+      Integer count, String problemSetName) throws CodeforcesApiException {
+
+    if (count == null || count == 0 || count > 1000) {
+      throw new CodeforcesApiException("Please enter a valid count in range [0, 1000].");
+    }
+    List<Pair> params = new ArrayList<>();
+    params.add(new Pair("count", count.toString()));
+
+    if (problemSetName != null && !problemSetName.isBlank()) {
+      params.add(new Pair("problemsetName", problemSetName));
+    }
+
     return this.makeListRequest(
-        "user.info",
-        List.of(new Pair("handles", String.join(";", handles))),
+        "problemset.recentStatus",
+        params,
         false,
-        new ParameterizedTypeReference<CFResponseList<User>>() {}
+        new ParameterizedTypeReference<CFResponseList<Submission>>() {
+        }
+    );
+  }
+
+  /**
+   * Retrieves recent actions.
+   *
+   * @param maxCount (Required) The number of recent actions to return. Can be up to 100.
+   * @return A List response having list of RecentAction objects representing the recent actions.
+   */
+  public Mono<CFResponseList<RecentAction>> getRecentActions(
+      Integer maxCount) throws CodeforcesApiException {
+
+    if (maxCount == null || maxCount == 0 || maxCount > 1000) {
+      throw new CodeforcesApiException("Please enter a valid maxCount in range [0, 100].");
+    }
+
+    return this.makeListRequest(
+        "recentActions",
+        List.of(new Pair("maxCount", maxCount.toString())),
+        false,
+        new ParameterizedTypeReference<CFResponseList<RecentAction>>() {
+        }
+    );
+  }
+
+  /**
+   * Retrieves a list of all user's blog entries.
+   *
+   * @param handle (Required) The Codeforces user handle.
+   * @return A list of BlogEntry objects in short form.
+   */
+  public Mono<CFResponseList<BlogEntry>> getUserBlogEntries(
+      String handle) throws CodeforcesApiException {
+
+    if (handle == null || handle.isBlank()) {
+      throw new CodeforcesApiException("Please enter a valid handle.");
+    }
+
+    return this.makeListRequest(
+        "user.blogEntries",
+        List.of(new Pair("handle", handle)),
+        false,
+        new ParameterizedTypeReference<CFResponseList<BlogEntry>>() {
+        }
     );
   }
 
@@ -316,11 +385,112 @@ public class CodeforcesWebClient {
    *                   are returned.
    */
   public Mono<CFResponseList<String>> getUserFriends(Boolean onlyOnline) {
+    if (onlyOnline == null) {
+      onlyOnline = false;
+    }
     return this.makeListRequest(
         "user.friends",
         List.of(new Pair("onlyOnline", onlyOnline.toString())),
         true,
-        new ParameterizedTypeReference<CFResponseList<String>>() {}
+        new ParameterizedTypeReference<CFResponseList<String>>() {
+        }
+    );
+  }
+
+  /**
+   * Returns information about one or several users.
+   *
+   * @param handles Semicolon-separated list of handles. No more than 10000 handles is accepted.
+   */
+  public Mono<CFResponseList<User>> getUserInfo(List<String> handles)
+      throws CodeforcesApiException {
+
+    if (handles == null || handles.isEmpty()) {
+      throw new CodeforcesApiException("Please provide at least one handle.");
+    }
+
+    return this.makeListRequest(
+        "user.info",
+        List.of(new Pair("handles", String.join(";", handles))),
+        false,
+        new ParameterizedTypeReference<CFResponseList<User>>() {
+        }
+    );
+  }
+
+  /**
+   * Retrieves the list of users who have participated in at least one rated contest.
+   *
+   * @param activeOnly     Boolean. If true, only users who participated in a rated contest during
+   *                       the last month are returned. Otherwise, all users with at least one rated
+   *                       contest are returned.
+   * @param includeRetired Boolean. If true, the method returns all rated users. Otherwise, the
+   *                       method returns only users who were online in the last month.
+   * @param contestId      Id of the contest. It is not the round number. It can be seen in the
+   *                       contest URL. For example: /contest/566/status
+   * @return A list of User objects, sorted in decreasing order of rating.
+   */
+  public Mono<CFResponseList<User>> getUserRatedList(
+      Boolean activeOnly, Boolean includeRetired, String contestId) {
+
+    Object[] values = {activeOnly, includeRetired, contestId};
+    String[] keys = {"activeOnly", "includeRetired", "contestId"};
+
+    return this.makeListRequest(
+        "user.ratedList",
+        filterNullParameters(keys, values),
+        false,
+        new ParameterizedTypeReference<CFResponseList<User>>() {
+        }
+    );
+  }
+
+  /**
+   * Retrieves the rating history of the specified user.
+   *
+   * @param handle (Required) The Codeforces user handle.
+   * @return A list of RatingChange objects representing the rating history of the requested user.
+   */
+  public Mono<CFResponseList<RatingChange>> getUserRating(String handle)
+      throws CodeforcesApiException {
+
+    if (handle == null || handle.isBlank()) {
+      throw new CodeforcesApiException("Please provide a valid handle");
+    }
+
+    return this.makeListRequest(
+        "user.rating",
+        List.of(new Pair("handle", handle)),
+        false,
+        new ParameterizedTypeReference<CFResponseList<RatingChange>>() {
+        }
+    );
+  }
+
+  /**
+   * Retrieves the submissions of the specified user.
+   *
+   * @param handle (Required) The Codeforces user handle.
+   * @param from   The 1-based index of the first submission to return.
+   * @param count  The number of submissions to return.
+   * @return A list of Submission objects, sorted in decreasing order of submission id.
+   */
+  public Mono<CFResponseList<Submission>> getUserStatus(String handle, Integer from, Integer count)
+      throws CodeforcesApiException {
+
+    if (handle == null || handle.isBlank()) {
+      throw new CodeforcesApiException("Please provide a valid handle");
+    }
+
+    Object[] values = {handle, from, count};
+    String[] keys = {"handle", "from", "count"};
+
+    return this.makeListRequest(
+        "user.status",
+        filterNullParameters(keys, values),
+        false,
+        new ParameterizedTypeReference<CFResponseList<Submission>>() {
+        }
     );
   }
 

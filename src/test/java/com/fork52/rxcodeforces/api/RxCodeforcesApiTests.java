@@ -1,6 +1,8 @@
 package com.fork52.rxcodeforces.api;
 
+import com.fork52.rxcodeforces.api.exception.CodeforcesApiException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
@@ -79,11 +81,46 @@ class RxCodeforcesApiTests {
   }
 
   @Test
-  void testGetUserInfo() {
+  void testGetProblemSetProblems() {
+    StepVerifier.create(codeforcesWebClient.getProblemSetProblems(
+            List.of("implementation"), null
+        ))
+        .expectSubscription()
+        .expectNextCount(1)
+        .verifyComplete();
+  }
+
+  @Test
+  void testGetUserBlogEntries() throws CodeforcesApiException {
+
+    StepVerifier.create(codeforcesWebClient.getUserBlogEntries("Fefer_Ivan"))
+        .expectSubscription()
+        .expectNextCount(1)
+        .verifyComplete();
+  }
+
+
+  @Test
+  void testGetUserInfo() throws CodeforcesApiException {
     StepVerifier.create(codeforcesWebClient.getUserInfo(Arrays.asList("DmitriyH", "Fefer_Ivan")))
         .expectSubscription()
         .expectNextCount(1)
         .verifyComplete();
   }
 
+  @Test
+  void testGetUserRatedList() throws CodeforcesApiException {
+    StepVerifier.create(codeforcesWebClient.getUserRatedList(true, false, null))
+        .expectSubscription()
+        .expectNextCount(1)
+        .verifyComplete();
+  }
+
+  @Test
+  void testGetUserStatus() throws CodeforcesApiException {
+    StepVerifier.create(codeforcesWebClient.getUserStatus("fork52", null, null))
+        .expectSubscription()
+        .expectNextCount(1)
+        .verifyComplete();
+  }
 }
