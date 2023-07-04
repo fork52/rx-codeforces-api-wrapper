@@ -13,10 +13,10 @@ import com.fork52.rxcodeforces.api.dto.RecentAction;
 import com.fork52.rxcodeforces.api.dto.Submission;
 import com.fork52.rxcodeforces.api.dto.User;
 import com.fork52.rxcodeforces.api.exception.CodeforcesApiException;
+import com.fork52.rxcodeforces.api.util.CommonConstants;
 import com.fork52.rxcodeforces.api.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -24,14 +24,17 @@ import org.springframework.web.util.UriBuilder;
 import reactor.core.publisher.Mono;
 
 /**
- * Represents a CodeforcesWebClient
+ * Represents a CodeforcesWebClient.
  */
-@Slf4j
 public class CodeforcesWebClient {
 
   private final WebClient cfWebClient;
   private CFAuthenticator cfAuthenticator;
 
+  /**
+   * Constructs a new instance of CodeforcesWebClient. Initializes the WebClient with default
+   * settings and sets the base URL to "https://codeforces.com/api/".
+   */
   public CodeforcesWebClient() {
     final int size = 1 << 26;
     final ExchangeStrategies strategies = ExchangeStrategies.builder()
@@ -46,13 +49,27 @@ public class CodeforcesWebClient {
     this.cfAuthenticator = null;
   }
 
+  /**
+   * Constructs a new instance of CodeforcesWebClient with the specified API key and API secret.
+   * Initializes the WebClient with default settings and sets the base URL to
+   * "https://codeforces.com/api/".
+   *
+   * @param apiKey    The API key for Codeforces authentication.
+   * @param apiSecret The API secret for Codeforces authentication.
+   */
   public CodeforcesWebClient(String apiKey, String apiSecret) {
     this();
     this.cfAuthenticator = new CFAuthenticator(apiKey, apiSecret);
   }
 
   /**
-   * Prepares the uriBuildler.
+   * Builds a UriBuilder with the provided path, parameters, and authorization status.
+   *
+   * @param uriBuilder   The initial UriBuilder.
+   * @param path         The path to append to the UriBuilder.
+   * @param params       The list of parameters to include in the UriBuilder.
+   * @param isAuthorized The authorization status indicating if the request is authorized.
+   * @return The updated UriBuilder with the path, parameters, and authorization details.
    */
   private UriBuilder getUriBuilder(UriBuilder uriBuilder, String path, List<Pair> params,
       Boolean isAuthorized) {
@@ -74,7 +91,11 @@ public class CodeforcesWebClient {
   }
 
   /**
-   * Returns paramList after filtering out null parameters.
+   * Filters out null parameters and creates a list of key-value pairs.
+   *
+   * @param keys   The array of keys.
+   * @param values The array of values.
+   * @return The list of non-null key-value pairs.
    */
   private List<Pair> filterNullParameters(String[] keys, Object[] values) {
     List<Pair> paramList = new ArrayList<>();
@@ -87,11 +108,15 @@ public class CodeforcesWebClient {
   }
 
   /**
-   * makeRequest to Codeforces api
+   * Makes a GET request to the specified API path with the given parameters and retrieves a
+   * response of type CFResponseList<T>.
    *
-   * @param path         Endpoint path
-   * @param params       List of parameters. Each parameter is a pair
-   * @param isAuthorized Boolean value showing whether authorization is required.
+   * @param path          The API path for the request.
+   * @param params        The list of parameters to include in the request.
+   * @param isAuthorized  Boolean indicating if the request requires authorization.
+   * @param typeReference The ParameterizedTypeReference representing the response type.
+   * @param <T>           The type of the response.
+   * @return A Mono emitting the CFResponseList<T> containing the response data.
    */
   private <T> Mono<CFResponseList<T>> makeListRequest(String path, List<Pair> params,
       Boolean isAuthorized, ParameterizedTypeReference<CFResponseList<T>> typeReference) {
@@ -106,20 +131,22 @@ public class CodeforcesWebClient {
   }
 
   /**
-   * makeRequest to Codeforces api
+   * Makes a GET request to the specified API path with the given parameters and retrieves a
+   * response of type CFResponse<T>.
    *
-   * @param path         Endpoint path
-   * @param params       List of parameters. Each parameter is a pair
-   * @param isAuthorized Boolean value showing whether authorization is required.
+   * @param path          The API path for the request.
+   * @param params        The list of parameters to include in the request.
+   * @param typeReference The ParameterizedTypeReference representing the response type.
+   * @param <T>           The type of the response.
+   * @return A Mono emitting the CFResponse<T> containing the response data.
    */
   private <T> Mono<CFResponse<T>> makeRequest(String path, List<Pair> params,
-      Boolean isAuthorized,
       ParameterizedTypeReference<CFResponse<T>> typeReference
   ) {
     return this.cfWebClient
         .get()
         .uri(
-            uriBuilder -> getUriBuilder(uriBuilder, path, params, isAuthorized)
+            uriBuilder -> getUriBuilder(uriBuilder, path, params, false)
                 .build()
         )
         .retrieve()
@@ -152,7 +179,6 @@ public class CodeforcesWebClient {
     return this.makeRequest(
         "blogEntry.view",
         List.of(new Pair("blogEntryId", blogEntryId)),
-        false,
         new ParameterizedTypeReference<CFResponse<BlogEntry>>() {
         }
     );
@@ -168,7 +194,7 @@ public class CodeforcesWebClient {
   public Mono<CFResponseList<Hack>> getContestHacks(String contestId) {
     return this.makeListRequest(
         "contest.hacks",
-        List.of(new Pair("contestId", contestId)),
+        List.of(new Pair(CommonConstants.CONTEST_ID_PARAM, contestId)),
         false,
         new ParameterizedTypeReference<CFResponseList<Hack>>() {
         }
@@ -200,7 +226,7 @@ public class CodeforcesWebClient {
   public Mono<CFResponseList<RatingChange>> getContestRatingChanges(String contestId) {
     return this.makeListRequest(
         "contest.ratingChanges",
-        List.of(new Pair("contestId", contestId)),
+        List.of(new Pair(CommonConstants.CONTEST_ID_PARAM, contestId)),
         false,
         new ParameterizedTypeReference<CFResponseList<RatingChange>>() {
         }
@@ -231,12 +257,12 @@ public class CodeforcesWebClient {
       Boolean showUnofficial
   ) {
     Object[] values = {contestId, from, count, handles, room, showUnofficial};
-    String[] keys = {"contestId", "from", "count", "handles", "room", "showUnofficial"};
+    String[] keys = {CommonConstants.CONTEST_ID_PARAM, "from", CommonConstants.COUNT_PARAM,
+        CommonConstants.HANDLES_PARAM, "room", "showUnofficial"};
 
     return this.makeRequest(
         "contest.standings",
         filterNullParameters(keys, values),
-        false,
         new ParameterizedTypeReference<CFResponse<ContestStandings>>() {
         }
     );
@@ -260,7 +286,7 @@ public class CodeforcesWebClient {
       Integer from,
       Integer count) {
     Object[] values = {contestId, handle, from, count};
-    String[] keys = {"contestId", "handles", "from", "count"};
+    String[] keys = {"contestId", "handles", "from", CommonConstants.COUNT_PARAM};
 
     return this.makeListRequest(
         "contest.status",
@@ -298,7 +324,6 @@ public class CodeforcesWebClient {
     return this.makeRequest(
         "problemset.problems",
         params,
-        false,
         new ParameterizedTypeReference<CFResponse<ProblemSet>>() {
         }
     );
@@ -371,7 +396,7 @@ public class CodeforcesWebClient {
 
     return this.makeListRequest(
         "user.blogEntries",
-        List.of(new Pair("handle", handle)),
+        List.of(new Pair(CommonConstants.HANDLE_PARAM, handle)),
         false,
         new ParameterizedTypeReference<CFResponseList<BlogEntry>>() {
         }
@@ -411,7 +436,7 @@ public class CodeforcesWebClient {
 
     return this.makeListRequest(
         "user.info",
-        List.of(new Pair("handles", String.join(";", handles))),
+        List.of(new Pair(CommonConstants.HANDLES_PARAM, String.join(";", handles))),
         false,
         new ParameterizedTypeReference<CFResponseList<User>>() {
         }
@@ -460,7 +485,7 @@ public class CodeforcesWebClient {
 
     return this.makeListRequest(
         "user.rating",
-        List.of(new Pair("handle", handle)),
+        List.of(new Pair(CommonConstants.HANDLE_PARAM, handle)),
         false,
         new ParameterizedTypeReference<CFResponseList<RatingChange>>() {
         }
@@ -483,7 +508,7 @@ public class CodeforcesWebClient {
     }
 
     Object[] values = {handle, from, count};
-    String[] keys = {"handle", "from", "count"};
+    String[] keys = {CommonConstants.HANDLE_PARAM, "from", "count"};
 
     return this.makeListRequest(
         "user.status",
