@@ -18,6 +18,7 @@ import com.fork52.rxcodeforces.api.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriBuilder;
@@ -127,6 +128,15 @@ public class CodeforcesWebClient {
                 .build()
         )
         .retrieve()
+        .onStatus(HttpStatusCode::isError, clientResponse ->
+            clientResponse.bodyToMono(typeReference)
+                .flatMap(errorResponse ->
+                    Mono.just(new CodeforcesApiException(
+                        String.format("Status:%s, %s", errorResponse.getStatus(),
+                            errorResponse.getComment())
+                    ))
+                )
+        )
         .bodyToMono(typeReference);
   }
 
@@ -150,6 +160,15 @@ public class CodeforcesWebClient {
                 .build()
         )
         .retrieve()
+        .onStatus(HttpStatusCode::isError, clientResponse ->
+            clientResponse.bodyToMono(typeReference)
+                .flatMap(errorResponse ->
+                    Mono.just(new CodeforcesApiException(
+                        String.format("Status:%s, %s", errorResponse.getStatus(),
+                            errorResponse.getComment())
+                    ))
+                )
+        )
         .bodyToMono(typeReference);
   }
 
