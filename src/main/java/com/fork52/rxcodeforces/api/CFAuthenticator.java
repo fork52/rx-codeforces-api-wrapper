@@ -8,7 +8,6 @@ import java.util.Random;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Class representing a Codeforces Authenticator
@@ -16,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Slf4j
 class CFAuthenticator {
 
   private String apiKey;
@@ -25,7 +23,9 @@ class CFAuthenticator {
   private static final Random random = new Random();
 
   /**
-   * Generates and returns 6 characters random ID
+   * Generates and returns a random ID consisting of 6 characters.
+   *
+   * @return The generated random ID.
    */
   private static String generateRandomId() {
     char[] randomChars = new char[6];
@@ -37,19 +37,26 @@ class CFAuthenticator {
     return String.valueOf(randomChars);
   }
 
+  /**
+   * Generates an API signature for the specified api-methodName and query parameters.
+   *
+   * @param methodName  The name of the API method.
+   * @param queryParams The list of query parameters.
+   * @return The generated API signature.
+   */
   public String getApiSignature(String methodName, List<Pair> queryParams) {
     String randId = CFAuthenticator.generateRandomId();
-
-    log.info("Query Params:" + this.getQueryString(queryParams));
     String hashKey = String.format("%s/%s?%s#%s",
         randId, methodName, this.getQueryString(queryParams), this.apiSecret);
-
-    log.info("Hash Key:" + hashKey);
     return randId + CFAuthenticator.hashSHA512(hashKey);
   }
 
   /**
-   * Returns a hashKey as defined by the codeforces-api
+   * Generates a query string by sorting the query parameters in ascending order based on key and
+   * value.
+   *
+   * @param queryParams The list of query parameters.
+   * @return The generated query string.
    */
   private String getQueryString(List<Pair> queryParams) {
     List<String> sortedParams = queryParams.stream()

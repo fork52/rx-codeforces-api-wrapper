@@ -26,7 +26,7 @@ public class Party {
   /**
    * The participant type of the party.
    */
-  private String participantType;
+  private ParticipantType participantType;
 
   /**
    * The team ID. This field can be absent. If the party is a team, then it is a unique team ID.
@@ -55,4 +55,12 @@ public class Party {
    * The time when this party started a contest. This field can be absent.
    */
   private Integer startTimeSeconds;
+
+  public enum ParticipantType {
+    CONTESTANT,
+    PRACTICE,
+    VIRTUAL,
+    MANAGER,
+    OUT_OF_COMPETITION
+  }
 }

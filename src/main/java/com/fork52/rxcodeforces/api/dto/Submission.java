@@ -51,12 +51,12 @@ public class Submission {
   /**
    * The verdict of the submission. This field can be absent.
    */
-  private String verdict;
+  private Verdict verdict;
 
   /**
    * The testset used for judging the submission.
    */
-  private String testset;
+  private TestSet testset;
 
   /**
    * The number of passed tests.
@@ -77,4 +77,21 @@ public class Submission {
    * The number of scored points for IOI-like contests. This field can be absent.
    */
   private Double points;
+
+  /**
+   * Represents the verdicts of a submission.
+   */
+  public enum Verdict {
+    FAILED, OK, PARTIAL, COMPILATION_ERROR, RUNTIME_ERROR, WRONG_ANSWER, PRESENTATION_ERROR,
+    TIME_LIMIT_EXCEEDED, MEMORY_LIMIT_EXCEEDED, IDLENESS_LIMIT_EXCEEDED, SECURITY_VIOLATED,
+    CRASHED, INPUT_PREPARATION_CRASHED, CHALLENGED, SKIPPED, TESTING, REJECTED
+  }
+
+  /**
+   * Represents the testsets used for judging a submission.
+   */
+  public enum TestSet {
+    SAMPLES, PRETESTS, TESTS, CHALLENGES, TESTS1, TESTS2, TESTS3, TESTS4, TESTS5, TESTS6,
+    TESTS7, TESTS8, TESTS9, TESTS10
+  }
 }

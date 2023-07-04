@@ -36,7 +36,7 @@ public class Problem {
   /**
    * The type of the problem.
    */
-  private String type;
+  private ProblemType type;
 
   /**
    * The maximum amount of points for the problem. This field can be absent.
@@ -52,4 +52,13 @@ public class Problem {
    * The problem tags.
    */
   private List<String> tags;
+
+
+  /**
+   * Represents the types of a problem.
+   */
+  public enum ProblemType {
+    PROGRAMMING,
+    QUESTION
+  }
 }

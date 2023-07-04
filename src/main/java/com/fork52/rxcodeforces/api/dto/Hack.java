@@ -35,7 +35,7 @@ public class Hack {
   /**
    * The verdict of the hack. This field can be absent.
    */
-  private String verdict;
+  private Verdict verdict;
 
   /**
    * The problem that was hacked.
@@ -54,6 +54,14 @@ public class Hack {
    * the judge protocol and hack verdict. This field can be absent.
    */
   private JudgeProtocol judgeProtocol;
+
+  /**
+   * Represents the verdicts of a hack.
+   */
+  public enum Verdict {
+    HACK_SUCCESSFUL, HACK_UNSUCCESSFUL, INVALID_INPUT, GENERATOR_INCOMPILABLE,
+    GENERATOR_CRASHED, IGNORED, TESTING, OTHER
+  }
 
   /**
    * Represents the judge protocol for a hack.
@@ -79,3 +87,4 @@ public class Hack {
     private String verdict;
   }
 }
+

@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 
 /**
- * Represents a CF response.
+ * Represents a generic Codeforces Response.
  */
 @Data
 @NoArgsConstructor
