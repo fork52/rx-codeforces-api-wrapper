@@ -1,4 +1,4 @@
-package com.fork52.rxcodeforces.api.exception;
+package com.rxcodeforces.api.exception;
 
 /**
  * Represents a custom CodeforcesApiException.

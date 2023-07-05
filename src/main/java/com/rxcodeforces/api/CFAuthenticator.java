@@ -1,6 +1,6 @@
-package com.fork52.rxcodeforces.api;
+package com.rxcodeforces.api;
 
-import com.fork52.rxcodeforces.api.util.Pair;
+import com.rxcodeforces.api.util.Pair;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;

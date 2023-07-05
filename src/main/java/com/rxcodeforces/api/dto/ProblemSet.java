@@ -1,4 +1,4 @@
-package com.fork52.rxcodeforces.api.dto;
+package com.rxcodeforces.api.dto;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProblemSet {
+
   List<Problem> problems;
   List<ProblemStatistics> problemStatistics;
 }

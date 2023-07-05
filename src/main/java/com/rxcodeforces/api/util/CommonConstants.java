@@ -1,4 +1,4 @@
-package com.fork52.rxcodeforces.api.util;
+package com.rxcodeforces.api.util;
 
 /**
  * CommonConstants is a utility class that contains common constants used in the Codeforces API.

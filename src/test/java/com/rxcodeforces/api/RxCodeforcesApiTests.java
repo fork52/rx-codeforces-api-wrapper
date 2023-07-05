@@ -1,6 +1,6 @@
-package com.fork52.rxcodeforces.api;
+package com.rxcodeforces.api;
 
-import com.fork52.rxcodeforces.api.exception.CodeforcesApiException;
+import com.rxcodeforces.api.exception.CodeforcesApiException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;

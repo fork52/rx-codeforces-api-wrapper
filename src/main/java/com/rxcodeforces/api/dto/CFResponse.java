@@ -1,20 +1,19 @@
-package com.fork52.rxcodeforces.api.dto;
+package com.rxcodeforces.api.dto;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
 /**
- * Represents a CF response.
+ * Represents a generic Codeforces Response.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CFResponseList<T> {
+public class CFResponse<T> {
 
   private String status;
-  private List<T> result;
+  private T result;
   private String comment;
 }

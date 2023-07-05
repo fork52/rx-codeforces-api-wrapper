@@ -1,4 +1,4 @@
-package com.fork52.rxcodeforces.api;
+package com.rxcodeforces.api;
 
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;

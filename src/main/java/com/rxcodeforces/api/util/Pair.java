@@ -1,4 +1,4 @@
-package com.fork52.rxcodeforces.api.util;
+package com.rxcodeforces.api.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

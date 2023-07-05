@@ -1,4 +1,4 @@
-package com.fork52.rxcodeforces.api.dto;
+package com.rxcodeforces.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
