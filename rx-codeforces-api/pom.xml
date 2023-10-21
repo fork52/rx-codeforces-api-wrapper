@@ -12,18 +12,19 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
-  <groupId>io.github.fork52</groupId>
+  <groupId>io.github.fork52.rx-codeforces-api-wrapper</groupId>
   <artifactId>rx-codeforces-api</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
 
-  <name>rx-codeforces-api</name>
-  <description>A reactive web client for codeforces api</description>
-  <url>https://github.com/fork52/rx-codeforces-api</url>
-
   <properties>
     <java.version>17</java.version>
   </properties>
+
+  <!-- Start section containing metadata for publishing -->
+  <name>${project.groupId}:${project.artifactId}</name>
+  <description>A reactive wrapper for codeforces api</description>
+  <url>https://github.com/fork52/rx-codeforces-api</url>
 
   <licenses>
     <license>
@@ -38,6 +39,14 @@
       <email>mrunankmistry52@@gmail.com</email>
     </developer>
   </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com/fork52/rx-codeforces-api.git</connection>
+    <developerConnection>scm:git:git://github.com/fork52/rx-codeforces-api.git</developerConnection>
+    <url>https://github.com/fork52/rx-codeforces-api</url>
+    <tag>HEAD</tag>
+  </scm>
+  <!-- End section containing metadata for publishing -->
 
   <dependencies>
     <dependency>
