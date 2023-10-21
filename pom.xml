@@ -6,7 +6,7 @@
     <groupId>io.github.fork52</groupId>
     <artifactId>rx-codeforces-api-wrapper</artifactId>
     <version>1.0.0</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <modules>
         <module>rx-codeforces-api</module>
