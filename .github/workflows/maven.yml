@@ -9,8 +9,8 @@
 name: Java CI with Maven
 
 env:
-  CF_API_KEY={{secrets.CF_API_KEY}}
-  CF_API_SECRET={{secrets.CF_API_SECRET}}
+  CF_API_KEY=${{ secrets.CF_API_KEY }}
+  CF_API_SECRET=${{ secrets.CF_API_SECRET }}
 
 on:
   push:
