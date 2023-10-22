@@ -8,6 +8,12 @@ This allows for a non-blocking, asynchronous usage.
 
 It also uses **Project Reactor's** reactive streams to handle the responses.
 
+<p align="center">
+  <a href="https://github.com/fork52/chess_gif/blob/master/LICENSE">
+      <img alt="Apache License" src="https://img.shields.io/badge/License-Apache_2.0-blue" />
+  </a>
+</p>
+
 ## Installation
 ### Maven
 ```xml
