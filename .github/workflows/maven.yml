@@ -8,15 +8,16 @@
 
 name: Java CI with Maven
 
-env:
-  CF_API_KEY=${{ secrets.CF_API_KEY }}
-  CF_API_SECRET=${{ secrets.CF_API_SECRET }}
-
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
+
+env:
+  CF_API_KEY: ${{ secrets.CF_API_KEY }}
+  CF_API_SECRET: ${{ secrets.CF_API_SECRET }}
 
 jobs:
   build:
