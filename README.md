@@ -1,7 +1,7 @@
 
 # rx-codeforces-api
 
-A reactive api wrapper for codeforces api. 
+A reactive api wrapper for codeforces api :)
 
 At its core, the library uses **Spring WebFlux's** reactive web client to make api requests. 
 This allows for a non-blocking, asynchronous usage.
