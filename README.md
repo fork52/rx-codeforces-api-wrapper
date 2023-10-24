@@ -12,15 +12,26 @@ It also uses **Project Reactor's** reactive streams to handle the responses.
   <a href="https://github.com/fork52/chess_gif/blob/master/LICENSE">
       <img alt="Apache License" src="https://img.shields.io/badge/License-Apache_2.0-blue" />
   </a>
+  <a href="https://javadoc.io/doc/io.github.fork52.rx-codeforces-api-wrapper/rx-codeforces-api">
+      <img alt="Java Doc" src="https://javadoc.io/badge2/io.github.fork52.rx-codeforces-api-wrapper/rx-codeforces-api/javadoc.svg" />
+  </a>
 </p>
 
 ## Installation
 ### Maven
+The library is available on Maven Central. [Maven Central Link](https://central.sonatype.com/artifact/io.github.fork52.rx-codeforces-api-wrapper/rx-codeforces-api).
+
+To use it, add the following dependency to your pom.xml file:
+
 ```xml
 <groupId>io.github.fork52.rx-codeforces-api-wrapper</groupId>
 <artifactId>rx-codeforces-api</artifactId>
 <version>1.0.0</version>
 ```
+
+## Documentation
+- CodeForces Api Documentation: [cf-api-docs](https://codeforces.com/apiHelp)
+- Javadocs: [Official documentation](https://javadoc.io/doc/io.github.fork52.rx-codeforces-api-wrapper/rx-codeforces-api/latest/com/rxcodeforces/api/CodeforcesWebClient.html)
 
 ## Usage
 

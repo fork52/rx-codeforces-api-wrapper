@@ -7,13 +7,13 @@
 
   <groupId>io.github.fork52.rx-codeforces-api-wrapper</groupId>
   <artifactId>rx-codeforces-api</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <packaging>jar</packaging>
 
   <parent>
     <groupId>io.github.fork52</groupId>
     <artifactId>rx-codeforces-api-wrapper</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
   </parent>
 
   <properties>
