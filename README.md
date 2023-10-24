@@ -22,6 +22,10 @@ It also uses **Project Reactor's** reactive streams to handle the responses.
 <version>1.0.0</version>
 ```
 
+## Documentation
+- CodeForces Api Documentation: [cf-api-docs](https://codeforces.com/apiHelp)
+- Javadocs: [Official documentation](https://javadoc.io/doc/io.github.fork52.rx-codeforces-api-wrapper/rx-codeforces-api/latest/com/rxcodeforces/api/CodeforcesWebClient.html)
+
 ## Usage
 
 ### CodeforcesWebClient
