@@ -23,10 +23,12 @@ The library is available on Maven Central. [Maven Central Link](https://central.
 
 To use it, add the following dependency to your pom.xml file:
 
+Latest Version: 1.0.2
+
 ```xml
 <groupId>io.github.fork52.rx-codeforces-api-wrapper</groupId>
 <artifactId>rx-codeforces-api</artifactId>
-<version>1.0.0</version>
+<version>1.0.2</version>
 ```
 
 ## Documentation
