@@ -9,6 +9,10 @@ on:
       - develop
     types: [closed]
 
+env:
+  CF_API_KEY: ${{ secrets.CF_API_KEY }}
+  CF_API_SECRET: ${{ secrets.CF_API_SECRET }}
+
 jobs:
   publish:
     if: github.event.pull_request.merged == true
