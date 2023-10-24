@@ -19,6 +19,10 @@ It also uses **Project Reactor's** reactive streams to handle the responses.
 
 ## Installation
 ### Maven
+The library is available on Maven Central. [Maven Central Link](https://central.sonatype.com/artifact/io.github.fork52.rx-codeforces-api-wrapper/rx-codeforces-api).
+
+To use it, add the following dependency to your pom.xml file:
+
 ```xml
 <groupId>io.github.fork52.rx-codeforces-api-wrapper</groupId>
 <artifactId>rx-codeforces-api</artifactId>
