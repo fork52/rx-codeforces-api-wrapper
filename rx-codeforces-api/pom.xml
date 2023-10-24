@@ -5,17 +5,16 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.1.0</version>
-    <relativePath/> <!-- lookup parent from repository -->
-  </parent>
-
   <groupId>io.github.fork52.rx-codeforces-api-wrapper</groupId>
   <artifactId>rx-codeforces-api</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
+
+  <parent>
+    <groupId>io.github.fork52</groupId>
+    <artifactId>rx-codeforces-api-wrapper</artifactId>
+    <version>1.0.0</version>
+  </parent>
 
   <properties>
     <java.version>17</java.version>
